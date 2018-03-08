@@ -12,6 +12,9 @@ import com.ml.galaxy.rest.PeriodsResource;
 import com.ml.galaxy.rest.WeatherStatusResource;
 import com.sun.jersey.guice.spi.container.servlet.GuiceContainer;
 
+/**
+ * Created by Esteban Orue on 07/03/2018.
+ */
 public class GalaxyModule extends ServletModule{
 	@Override
     protected void configureServlets() {

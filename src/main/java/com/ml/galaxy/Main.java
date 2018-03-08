@@ -11,6 +11,9 @@ import com.google.inject.servlet.GuiceFilter;
 import com.google.inject.servlet.GuiceServletContextListener;
 import com.ml.galaxy.guice.GalaxyModule;
 
+/**
+ * Created by Esteban Orue on 07/03/2018.
+ */
 public class Main {
 	private static final Logger LOGGER = Logger.getLogger(Main.class);
 
@@ -29,13 +32,7 @@ public class Main {
             }
         });
 
-        // Then add GuiceFilter and configure the server to
-        // reroute all requests through this filter.
         sch.addFilter(GuiceFilter.class, "/*", null);
-
-        // Must add DefaultServlet for embedded Jetty.
-        // Failing to do this will cause 404 errors.
-        // This is not needed if web.xml is used instead.
         sch.addServlet(DefaultServlet.class, "/");
 
         LOGGER.info("Service started. - Deploy time: " + (System.currentTimeMillis() - startDeploy) + " ms.");

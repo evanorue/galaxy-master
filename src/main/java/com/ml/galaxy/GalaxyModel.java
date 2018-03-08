@@ -4,7 +4,6 @@ import static java.lang.Math.sin;
 
 import java.awt.geom.Point2D;
 
-
 /**
  * Created by Orue Esteban on 07/03/2018.
  */

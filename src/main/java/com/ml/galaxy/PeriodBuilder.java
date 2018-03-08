@@ -8,6 +8,9 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import com.ml.galaxy.GalaxyModel.Forecast;
 
+/**
+ * Created by Esteban Orue on 07/03/2018.
+ */
 public class PeriodBuilder implements Iterable<PeriodBuilder.Period>{
 
 	private List<Period> periods;
@@ -26,67 +29,64 @@ public class PeriodBuilder implements Iterable<PeriodBuilder.Period>{
 
     }
     
-    /**
-    Meant to be called sequentially, without skipping days or going back
- */
-public void addForecast(Forecast forecast) {
-    if (last == null || last.getForecast() != forecast) { //new period
-        last = new Period(forecast, currDay);
+	public void addForecast(Forecast forecast) {
+	    if (last == null || last.getForecast() != forecast) { //new period
+	        last = new Period(forecast, currDay);
+	
+	        periods.add(last);
+	        counters.get(forecast).incrementAndGet();
+	    }
+	    else {
+	        last.incDayTo();
+	    }
+	
+	    currDay++;
+	}
 
-        periods.add(last);
-        counters.get(forecast).incrementAndGet();
-    }
-    else {
-        last.incDayTo();
-    }
+	public int getCount(Forecast forecast) {
+	    return counters.get(forecast).intValue();
+	}
 
-    currDay++;
-}
+	@Override
+	public Iterator<Period> iterator() {
+	    return periods.iterator();
+	}
 
-public int getCount(Forecast forecast) {
-    return counters.get(forecast).intValue();
-}
-
-@Override
-public Iterator<Period> iterator() {
-    return periods.iterator();
-}
-
-public static class Period {
-    private final Forecast forecast;
-    private final int dayFrom;
-    private int dayTo;
-
-    public Period(Forecast forecast, int dayFrom) {
-        this(forecast, dayFrom, dayFrom);
-    }
-
-    public Period(Forecast forecast, int dayFrom, int dayTo) {
-        this.forecast = forecast;
-        this.dayFrom = dayFrom;
-        this.dayTo = dayTo;
-    }
-
-    public void incDayTo() {
-        dayTo++;
-    }
-
-    public Forecast getForecast() {
-        return forecast;
-    }
-
-    public int getDayFrom() {
-        return dayFrom;
-    }
-
-    public int getDayTo() {
-        return dayTo;
-    }
-
-    @Override
-    public String toString() {
-        return forecast + " from day " + dayFrom + " to " + dayTo;
-    }
-}
+	public static class Period {
+	    private final Forecast forecast;
+	    private final int dayFrom;
+	    private int dayTo;
+	
+	    public Period(Forecast forecast, int dayFrom) {
+	        this(forecast, dayFrom, dayFrom);
+	    }
+	
+	    public Period(Forecast forecast, int dayFrom, int dayTo) {
+	        this.forecast = forecast;
+	        this.dayFrom = dayFrom;
+	        this.dayTo = dayTo;
+	    }
+	
+	    public void incDayTo() {
+	        dayTo++;
+	    }
+	
+	    public Forecast getForecast() {
+	        return forecast;
+	    }
+	
+	    public int getDayFrom() {
+	        return dayFrom;
+	    }
+	
+	    public int getDayTo() {
+	        return dayTo;
+	    }
+	
+	    @Override
+	    public String toString() {
+	        return forecast + " from day " + dayFrom + " to " + dayTo;
+	    }
+	}
 
 }
